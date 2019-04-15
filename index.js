@@ -1,14 +1,12 @@
-//express module
+//webserver modules
 const express = require ('express')
 const app = express ()
 const port = 3000
-//body-parser module
 const bodyParser = require ('body-parser')
 app.use(bodyParser.json())
-//tedious module
+//mssql server modules
 var Connection = require('tedious').Connection; 
 var Request = require('tedious').Request;
-//fs module
 fs = require('fs');
 
 /**
@@ -52,3 +50,16 @@ connection.on('connect',function(err){
         console.log("Connected")
     }
 });
+
+/**
+  * Sets up the HTTP methods for the Webserver communication
+  * Uses the router file to keep the HTTP methods
+  * Turns on the webserver
+*/
+
+const appRouter = require('./routes/appRouter')
+app.use('/bookstore', appRouter)
+
+var server = app.listen(port, function () {
+    console.log(`Server listening on port ${port}`)
+})
