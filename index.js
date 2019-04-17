@@ -41,15 +41,15 @@ var config =
 	}
 }
 
-var connection = new Connection(config);
-console.log(connection);
-connection.on('connect',function(err){
-    if(err){
-        console.log(err)
-    }else{
-        console.log("Connected")
-    }
-});
+// var connection = new Connection(config);
+// console.log(connection);
+// connection.on('connect',function(err){
+//     if(err){
+//         console.log(err)
+//     }else{
+//         console.log("Connected")
+//     }
+// });
 
 /**
   * Sets up the HTTP methods for the Webserver communication
