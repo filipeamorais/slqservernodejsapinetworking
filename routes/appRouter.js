@@ -38,8 +38,11 @@ appRouter.route('/add_page')
 
 appRouter.route('/adding')
 .get((req,res,next) => {
-    
-    
+    title = req.query.title,
+    author = req.query.author,
+    year = req.query.year,
+    genre = req.query.genre;
+    addQuery(title, author, year, genre);
 })
 
 appRouter.route('/delete_page')
@@ -47,9 +50,24 @@ appRouter.route('/delete_page')
     res.sendFile("delete_page.html", { root: "./public" } );
 })
 
+appRouter.route('/deleting')
+.get((req,res,next) => {
+    title = req.query.title,
+    deleteQuery(title);
+})
+
 appRouter.route('/find_page')
 .get((req,res,next) => {
     res.sendFile("find_page.html", { root: "./public" } );
+})
+
+appRouter.route('/finding')
+.get((req,res,next) => {
+    title = req.query.title,
+    author = req.query.author,
+    year = req.query.year,
+    genre = req.query.genre;
+    findQuery(title, author, year, genre);
 })
 
 appRouter.route('/list_page')
@@ -57,64 +75,48 @@ appRouter.route('/list_page')
     res.sendFile("list_page.html", { root: "./public" } );
 })
 
+appRouter.route('/listing')
+.get((req,res,next) => {
+    listAllQuery(title);
+})
+
 appRouter.route('/modify_page')
 .get((req,res,next) => {
     res.sendFile("modify_page.html", { root: "./public" } );
 })
 
+appRouter.route('/modifying')
+.get((req,res,next) => {
+    title = req.query.title,
+    author = req.query.author,
+    year = req.query.year,
+    genre = req.query.genre;
+    modifyQuery(title, author, year, genre);
+})
+
 module.exports = appRouter
 
-function selectQuery() {
+function addQuery(title, auhtor, year, genre) {
     console.log('Reading rows from the Table...');
     var request = new Request(
-        "SELECT * FROM Persons",
+        "INSERT INTO Books (Title, Author, Year, Genre) VALUES ("+title+","+auhtor+","+year+","+genre+")",
         function(err, rowCount, rows) {
             console.log(rowCount + ' row(s) returned');
             process.exit();
         }
     );
-
-    request.on('row', function(columns) {
-        columns.forEach(function(column) {
-            console.log("%s\t%s", column.metadata.colName, column.value);
-        });
-    });
     connection.execSql(request);
 }
 
-function addQuery() {
+function deleteQuery(title) {
     console.log('Reading rows from the Table...');
     var request = new Request(
-        "SELECT * FROM Persons",
+        "DELETE FROM Books WHERE Title ="+title,
         function(err, rowCount, rows) {
             console.log(rowCount + ' row(s) returned');
             process.exit();
         }
     );
-
-    request.on('row', function(columns) {
-        columns.forEach(function(column) {
-            console.log("%s\t%s", column.metadata.colName, column.value);
-        });
-    });
-    connection.execSql(request);
-}
-
-function deleteQuery() {
-    console.log('Reading rows from the Table...');
-    var request = new Request(
-        "SELECT * FROM Persons",
-        function(err, rowCount, rows) {
-            console.log(rowCount + ' row(s) returned');
-            process.exit();
-        }
-    );
-
-    request.on('row', function(columns) {
-        columns.forEach(function(column) {
-            console.log("%s\t%s", column.metadata.colName, column.value);
-        });
-    });
     connection.execSql(request);
 }
 
@@ -139,7 +141,7 @@ function findQuery() {
 function listAllQuery() {
     console.log('Reading rows from the Table...');
     var request = new Request(
-        "SELECT * FROM Persons",
+        "SELECT * FROM Books",
         function(err, rowCount, rows) {
             console.log(rowCount + ' row(s) returned');
             process.exit();
